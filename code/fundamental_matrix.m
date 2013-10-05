@@ -12,9 +12,9 @@ mu_1 = sum(first_image_points) / N;
 dx = first_x - repmat([mu_1(1)], N, 1);
 dy = first_y - repmat([mu_1(2)], N, 1);
 dists_1 = sqrt(dx.^2 + dy.^2);
-sigma_1 = std(dists_1)
+sigma_1 = std(dists_1);
 
-T_1 = [0 0 mu_1(1,1); 0 0 mu_1(1,2); 0 0 sigma_1];
+T_1 = [1 0 mu_1(1,1); 0 1 mu_1(1,2); 0 0 sigma_1]
 
 
 % Compute second transformation.
@@ -26,9 +26,9 @@ mu_2 = sum(second_image_points) / N;
 dx = second_x - repmat([mu_2(1)], N, 1);
 dy = second_y - repmat([mu_2(2)], N, 1);
 dists_2 = sqrt(dx.^2 + dy.^2);
-sigma_2 = std(dists_2)
+sigma_2 = std(dists_2);
 
-T_2 = [0 0 mu_2(1,1); 0 0 mu_2(1,2); 0 0 sigma_2];
+T_2 = [1 0 mu_2(1,1); 0 1 mu_2(1,2); 0 0 sigma_2]
 
 
 % Homogonize and normalize points.
@@ -42,11 +42,13 @@ second_normalized = T_2 * second_homogonized;
 % Construct A.
 A = zeros(N, 9);
 for i = 1:N
-    x_1 = first_normalized(1, i);
-    y_1 = first_normalized(2, i);
+    w_1 = first_normalized(3, i);
+    x_1 = first_normalized(1, i) / w_1;
+    y_1 = first_normalized(2, i) / w_1;
 
-    x_2 = second_normalized(1, i);
-    y_2 = second_normalized(2, i);
+    w_2 = second_normalized(3, i);
+    x_2 = second_normalized(1, i) / w_2;
+    y_2 = second_normalized(2, i) / w_2;
 
     A(i, 1) = x_1 * x_2;
     A(i, 2) = y_1 * x_2;
@@ -67,9 +69,10 @@ F_vect = V(:, 3);
 F_est = [F_vect(1:3).'; F_vect(4:6).'; F_vect(7:9).'];
 
 
-% Find F' by finding F_est = USV^T, F' = US'V^T, S' = [1 0 0; 0 1 0; 0 0 0].
+% Find F' of rank 2 by finding F_est = USV^T, F' = US'V^T,
+% where S' = [1 0 0; 0 1 0; 0 0 0].
 [U, S, V] = svd(F_est);
-S_prime = [1 0 0; 0 1 0; 0 0 0];
+S_prime = diag([S(1,1) S(2,2) 0]);
 F_normalized = U * S_prime * V.';
 
 
@@ -82,5 +85,8 @@ F = T_2.' * F_normalized * T_1;
 res_err = 0;
 
 
-% Verify F is correct.
+% Verify F is correct. TODO
+rank(F_est)
+rank(F)
 second_homogonized(:, 1).' * F * first_homogonized(:, 1)
+second_homogonized(:, 2).' * F * first_homogonized(:, 2)
