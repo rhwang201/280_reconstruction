@@ -37,7 +37,7 @@ matches = load([data_dir '/' name '_matches.txt']);
 
 
 % visualize matches (disable or enable this whenever you want)
-if true
+if false
     figure;
     imshow([I1 I2]); hold on;
     plot(matches(:,1), matches(:,2), '+r');
@@ -50,7 +50,7 @@ end
 % F        : the 3x3 fundamental matrix,
 % res_err  : mean squared distance between points in the two images and their
 % their corresponding epipolar lines
-[F res_err] = fundamental_matrix(); % <------------------------------------- You write this one!
+[F res_err] = fundamental_matrix(matches); % <------------------------------------- You write this one!
 
 fprintf('Residual in F = %f',res_err);
 

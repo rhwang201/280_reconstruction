@@ -1,8 +1,17 @@
-% [u; v] = 1/Z [xt_z; yt_z]
+% Create 3D points
+[X, Y] = meshgrid(-5:5, repmat([-1], 1, 11));
+Z = repmat([1:11].', 1, 11);
 
-[X, Y] = meshgrid(-10:.5:10, -10:.5:10);
-Z = [repmat([1:20].', 1, 41); repmat([inf], 21, 41)];
-tz = 50;
-U = tz * X ./ Z;
-V = tz * Y ./ Z;
-quiver(X, Y, U, V);
+% Projective Geometry
+% x = fX/Z, y = fY/Z
+f = 1;
+x = f .* X ./ Z;
+y = f .* Y ./ Z;
+
+% Translation along Z axis
+% [u; v] = 1/Z [xt_z; yt_z]
+tz = 10;
+U = tz .* x ./ Z;
+V = tz .* y ./ Z;
+
+quiver(x, y, U, V);
