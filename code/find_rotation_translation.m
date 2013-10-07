@@ -1,5 +1,5 @@
 function[R, t] = find_rotation_translation(E)
-    t = cell(1,4);
+    t = cell(1,2);
     R = cell(1,2);
 
 	[U, S, V] = svd(E);
@@ -16,11 +16,6 @@ function[R, t] = find_rotation_translation(E)
 
 	W = inv(W);
 	R_mat = U * W' * V';
-	t_hat = V * W * S * V';
-	t_vect = [t_hat(3, 2), -t_hat(3, 1), t_hat(2, 1)]';
-
-    t{1,3} = t_vect;
-    t{1,4} = -t_vect;
 
     R{1,2} = R_mat;
 end
