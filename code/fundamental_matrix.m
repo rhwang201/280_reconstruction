@@ -78,5 +78,7 @@ res_err = 0;
 
 
 % Verify F is correct. TODO
-rank(F_est)
-rank(F)
+rank(F_est);
+rank(F);
+second_homogonized(:, 1).' * F * first_homogonized(:, 1);
+second_homogonized(:, 2).' * F * first_homogonized(:, 2);
