@@ -8,14 +8,12 @@ first_image_points = matches(:, 1:2);
 first_x = first_image_points(:, 1);
 first_y = first_image_points(:, 2);
 
-mu_1 = sum(first_image_points) / N;
-dx = first_x - repmat([mu_1(1)], N, 1);
-dy = first_y - repmat([mu_1(2)], N, 1);
-dists_1 = sqrt(dx.^2 + dy.^2);
-sigma_1 = std(dists_1);
+mu_1 = mean(first_image_points,1);
+sigma_1 = std(first_image_points);
 
-T_1 = [1 0 mu_1(1,1); 0 1 mu_1(1,2); 0 0 sigma_1]
-
+sx = 1/sigma_1(1);
+sy = 1/sigma_1(2);
+T_1 = [sx 0 (-mu_1(1,1)*sx); 0 sy (-mu_1(1,2)*sy); 0 0 1];
 
 % Compute second transformation.
 second_image_points = matches(:, 3:4);
@@ -23,13 +21,11 @@ second_x = second_image_points(:, 1);
 second_y = second_image_points(:, 2);
 
 mu_2 = sum(second_image_points) / N;
-dx = second_x - repmat([mu_2(1)], N, 1);
-dy = second_y - repmat([mu_2(2)], N, 1);
-dists_2 = sqrt(dx.^2 + dy.^2);
-sigma_2 = std(dists_2);
+sigma_2 = std(second_image_points);
 
-T_2 = [1 0 mu_2(1,1); 0 1 mu_2(1,2); 0 0 sigma_2]
-
+sx = 1/sigma_2(1);
+sy = 1/sigma_2(2);
+T_2 = [sx 0 (-mu_2(1,1)*sx); 0 sy (-mu_2(1,2)*sy); 0 0 1];
 
 % Homogonize and normalize points.
 first_homogonized = [first_image_points repmat([1], N, 1)].';
@@ -38,17 +34,14 @@ second_homogonized = [second_image_points repmat([1], N, 1)].';
 first_normalized = T_1 * first_homogonized;
 second_normalized = T_2 * second_homogonized;
 
-
 % Construct A.
 A = zeros(N, 9);
 for i = 1:N
-    w_1 = first_normalized(3, i);
-    x_1 = first_normalized(1, i) / w_1;
-    y_1 = first_normalized(2, i) / w_1;
+    x_1 = first_normalized(1, i);
+    y_1 = first_normalized(2, i);
 
-    w_2 = second_normalized(3, i);
-    x_2 = second_normalized(1, i) / w_2;
-    y_2 = second_normalized(2, i) / w_2;
+    x_2 = second_normalized(1, i);
+    y_2 = second_normalized(2, i);
 
     A(i, 1) = x_1 * x_2;
     A(i, 2) = y_1 * x_2;
