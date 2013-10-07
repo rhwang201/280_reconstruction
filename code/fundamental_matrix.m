@@ -8,24 +8,24 @@ first_image_points = matches(:, 1:2);
 first_x = first_image_points(:, 1);
 first_y = first_image_points(:, 2);
 
-mu_1 = mean(first_image_points,1);
-sigma_1 = std(first_image_points);
+mu_1 = mean(first_image_points,1)
+sigma_1 = std(first_image_points)
 
 sx = 1/sigma_1(1);
 sy = 1/sigma_1(2);
-T_1 = [sx 0 (-mu_1(1,1)*sx); 0 sy (-mu_1(1,2)*sy); 0 0 1];
+T_1 = [sx 0 (-mu_1(1,1)*sx); 0 sy (-mu_1(1,2)*sy); 0 0 1]
 
 % Compute second transformation.
 second_image_points = matches(:, 3:4);
 second_x = second_image_points(:, 1);
 second_y = second_image_points(:, 2);
 
-mu_2 = sum(second_image_points) / N;
-sigma_2 = std(second_image_points);
+mu_2 = mean(second_image_points,1)
+sigma_2 = std(second_image_points)
 
 sx = 1/sigma_2(1);
 sy = 1/sigma_2(2);
-T_2 = [sx 0 (-mu_2(1,1)*sx); 0 sy (-mu_2(1,2)*sy); 0 0 1];
+T_2 = [sx 0 (-mu_2(1,1)*sx); 0 sy (-mu_2(1,2)*sy); 0 0 1]
 
 % Homogonize and normalize points.
 first_homogonized = [first_image_points repmat([1], N, 1)].';
@@ -58,8 +58,7 @@ end
 % Find right singular vector of A corresponding to smallest singular value
 % to obtain F_est.
 [U, S, V] = svd(A);
-F_vect = V(:, 3);
-F_est = [F_vect(1:3).'; F_vect(4:6).'; F_vect(7:9).'];
+F_est = vec2mat(V(:, end), 3)
 
 
 % Find F' of rank 2 by finding F_est = USV^T, F' = US'V^T,
