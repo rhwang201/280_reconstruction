@@ -3,7 +3,6 @@ function [points err] = find_3d_points(P1, P2, matches)
 [N, ~] = size(matches);
 A = zeros(4, 4);
 
-f = 1;
 points = zeros(N, 3);
 errs = zeros(1,2*N);
 
