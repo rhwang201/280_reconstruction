@@ -37,12 +37,12 @@ matches = load([data_dir '/' name '_matches.txt']);
 
 
 % visualize matches (disable or enable this whenever you want)
-if false
+if true
     figure;
     imshow([I1 I2]); hold on;
     plot(matches(:,1), matches(:,2), '+r');
     plot(matches(:,3)+size(I1,2), matches(:,4), '+r');
-    line([matches(:,1) matches(:,3) + size(I1,2)]', matches(:,[2 4])', 'Color', 'r');
+    line([matches(:,1) matches(:,3) + size(I1,2)]', matches(:,[2 4])', 'Color', 'b');
 end
 % -------------------------------------------------------------------------
 %% --------- Find fundamental matrix --------------------------------------
