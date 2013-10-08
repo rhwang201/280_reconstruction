@@ -26,6 +26,7 @@ for i = 1:N
     A(4, :) = [P2(3,1)*x_2(2)-P2(2,1), P2(3,2)*x_2(2)-P2(2,2), ...
                    P2(3,3)*x_2(2)-P2(2,3), P2(3,4)*x_2(2)-P2(2,4)];
 
+    % want A*X = 0, with constraint that ||X|| = 1
     [U, S, V] = svd(A);
 
     point = V(:, end);
