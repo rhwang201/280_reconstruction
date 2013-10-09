@@ -138,7 +138,11 @@ To calculate $\delta d$, we can use the equation above to get an equation for
 $\delta d$. Rearranging the terms, we get
 
 \begin{align*}
-\delta d = \frac{\delta Z * bf}{Z^2 + Z \delta Z}
+\delta Z * (bf + (\delta d) Z) &= (\delta d) Z^2 \\
+bf \delta Z + \delta Z (( \delta d) Z) + (\delta d) Z^2 &= 0 \\
+\delta Z (\delta d) Z + (\delta d) Z^2 &= - bf \delta Z  \\
+\delta d (Z \delta Z + Z^2) &= - bf \delta Z \\
+\delta d  &= \frac{- (bf \delta Z)}{(Z \delta Z + Z^2)} \\
 \end{align*}
 
 From here, the code is relatively simple:
