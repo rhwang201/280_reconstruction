@@ -129,9 +129,9 @@ Next, we can calculate $\delta Z$ in terms of $Z, \delta d$.
 \begin{align*}
 Z + \delta Z &= \frac{bf}{d + \delta d} \\
 Z + \delta Z &= \frac{bf}{\frac{bf}{Z} + \delta d} \\
-Z + \delta Z &= \frac{bfZ}{\frac{bf} + (\delta d) Z} \\
-\delta Z &= \frac{bfZ - bfZ + (\delta d) Z^2}{bf + (\delta d) Z} \\
-\delta Z &= \frac{(\delta d) Z^2}{bf + (\delta d) Z} \\
+Z + \delta Z &= \frac{bfZ}{bf + (\delta d) Z} \\
+\delta Z &= \frac{bfZ - bfZ - (\delta d) Z^2}{bf + (\delta d) Z} \\
+\delta Z &= -\frac{(\delta d) Z^2}{bf + (\delta d) Z} \\
 \end{align*}
 
 To calculate $\delta d$, we can use the equation above to get an equation for
@@ -152,16 +152,16 @@ deltad = (err * b * f) ./ (z .* (z + err));
 \newpage
 \section{Multi-View Reconstruction}
 \subsection{Finding the Fundamental Matrix}
-First, we normalize all the points by translating them by $\mu$ and scaling
-them such that the mean distance from $\mu$ (the new origin) is $\sqrt{2}$.
-Next, we compute $A$, a $N\times$ matrix. We want $Af = 0$ as this is just
-$x_2^tFx_1 = 0$ rewritten, but there is noise. We solve $min_f||Af||_2$, then,
-by taking the right singular vector of $A$ corresponding to the smallest
-singular value. This is our $F_{est}$. We must enforce that the fundamental
-matrix is of rank 2. So, we solve $min_F||F-F_{est}||_F$, via SVD. If
-$F_{est} = USV_t$, then $F = U\hat{S}V^t$, where $\hat{S} = diag(s_1, s_2, 0)$.
-The fundamental matrices we found with this method are shown in Figures
-\ref{f_lib} and \ref{f_house}.
+We followed the eight point algorithm. First, we normalize all the points by
+translating them by $\mu$ and scaling them such that the mean distance from
+$\mu$ (the new origin) is $\sqrt{2}$. Next, we compute $A$, a $N\times$ matrix.
+We want $Af = 0$ as this is just $x_2^tFx_1 = 0$ rewritten, but there is noise.
+We solve $min_f||Af||_2$, then, by taking the right singular vector of $A$
+corresponding to the smallest singular value. This is our $F_{est}$. We must
+enforce that the fundamental matrix is of rank 2. So, we solve
+$min_F||F-F_{est}||_F$, via SVD. If $F_{est} = USV_t$, then $F = U\hat{S}V^t$,
+where $\hat{S} = diag(s_1, s_2, 0)$. The fundamental matrices we found with
+this method are shown in Figures \ref{f_lib} and \ref{f_house}.
 
 Thus, to answer the question posed, we are minimizing the residual error.
 This is because F is defined as $e_2 = Fx_1$, where $e_2$ is the epipolar line
