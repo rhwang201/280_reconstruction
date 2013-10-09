@@ -1,3 +1,12 @@
+# windows
+Thumbs.db
+
+# latex
+*.aux
+*.log
+*.pdf
+
+# vim
 *.swp
 *.swo
 *.aux
