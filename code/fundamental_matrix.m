@@ -33,8 +33,8 @@ T_2 = [sx 0 (-mu_2(1,1)*sx); 0 sy (-mu_2(1,2)*sy); 0 0 1];
 first_homogonized = [first_image_points repmat([1], N, 1)].';
 second_homogonized = [second_image_points repmat([1], N, 1)].';
 
-first_normalized = T_1 * first_homogonized
-second_normalized = T_2 * second_homogonized
+first_normalized = T_1 * first_homogonized;
+second_normalized = T_2 * second_homogonized;
 
 % Construct A.
 A = zeros(N, 9);
@@ -70,10 +70,10 @@ F_normalized = U * S_prime * V.';
 
 
 % Denormalize.
-F = T_2.' * F_normalized * T_1
+F = T_2.' * F_normalized * T_1;
 
 % Compute mean squared distance between points in their two images and their
-% corresponding epipolar lines. TODO wat
+% corresponding epipolar lines.
 dist_sum = 0;
 for i = 1:N
     x_1 = [matches(i, 1:2) 1]';
