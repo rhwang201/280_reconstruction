@@ -12,8 +12,8 @@ figure(1)
 draw_dynamic(X, Y, Z, t, w);
 
 % PART 2
-[X, Y] = meshgrid(-5:4, -5:4);
-Z = ones(10)*2;
+[X, Y] = meshgrid(-5:4, ones(1,10)*-1);
+Z = repmat(1:10, 10, 1)';
 t = [ ts ; 0 ; 0 ];
 w = [ 0 ; 0 ; 0 ];
 figure(2)
