@@ -9,3 +9,5 @@ Thumbs.db
 # vim
 *.swp
 *.swo
+*.aux
+*.log

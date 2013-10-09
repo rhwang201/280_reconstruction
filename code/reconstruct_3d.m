@@ -1,4 +1,5 @@
-function [points P1 P2] = reconstruct_3d(name)
+function [points P1 P2 F res_err R t reconstruction_err] = ...
+    reconstruct_3d(name)
 % Homework 2: 3D reconstruction from two Views
 % This function takes as input the name of the image pairs (i.e. 'house' or
 % 'library') and returns the 3D points as well as the camera matrices...but
@@ -37,12 +38,12 @@ matches = load([data_dir '/' name '_matches.txt']);
 
 
 % visualize matches (disable or enable this whenever you want)
-if false
+if true
     figure;
     imshow([I1 I2]); hold on;
     plot(matches(:,1), matches(:,2), '+r');
     plot(matches(:,3)+size(I1,2), matches(:,4), '+r');
-    line([matches(:,1) matches(:,3) + size(I1,2)]', matches(:,[2 4])', 'Color', 'r');
+    %line([matches(:,1) matches(:,3) + size(I1,2)]', matches(:,[2 4])', 'Color', 'b');
 end
 % -------------------------------------------------------------------------
 %% --------- Find fundamental matrix --------------------------------------
@@ -52,7 +53,9 @@ end
 % their corresponding epipolar lines
 [F res_err] = fundamental_matrix(matches); % <------------------------------------- You write this one!
 
-fprintf('Residual in F = %f',res_err);
+disp('F:');
+disp(F);
+fprintf('Residual in F = %f\n',res_err);
 
 E = K2'*F*K1; % the essential matrix
 
@@ -75,6 +78,14 @@ num_points = zeros(length(t),length(R));
 % the reconstruction error for all combinations
 errs = inf(length(t),length(R));
 
+disp('Possible ts and Rs');
+for ti = 1:length(t)
+    disp(t{ti});
+end
+for ri = 1:length(R)
+    disp(R{ri});
+end
+
 for ti = 1:length(t)
     t2 = t{ti};
     for ri = 1:length(R)
@@ -96,7 +107,8 @@ end
 
 j = 1; % pick one out the best combinations
 
-fprintf('Reconstruction error = %f',errs(ti(j),ri(j)));
+reconstruction_err = errs(ti(j),ri(j));
+fprintf('Reconstruction error = %f\n',reconstruction_err);
 
 t2 = t{ti(j)}; R2 = R{ri(j)};
 P2 = K2*[R2 t2];
@@ -107,7 +119,7 @@ points = find_3d_points(P1, P2, matches); % <-----------------------------------
 %% -------- plot points and centers of cameras ----------------------------
 
 
-plot_3d(points); % <-------------------------------------------------------------- You write this one!
+plot_3d(points, name, t2); % <-------------------------------------------------------------- You write this one!
 
 
 
