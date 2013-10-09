@@ -4,6 +4,7 @@ Thumbs.db
 # latex
 *.aux
 *.log
+*.pdf
 
 # vim
 *.swp
