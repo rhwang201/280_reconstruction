@@ -90,8 +90,8 @@ for i = 1:N
     b_2 = el_2(2);
     c_2 = el_2(3);
     dist_2 = abs(a_2*x_2(1) + b_2*x_2(2) + c_2) / sqrt(a_2^2 + b_2^2);
-    % calc distance of x_1 from el_1, and x_2 from el_2
 
+    % calc distance of x_1 from el_1, and x_2 from el_2
     dist_sum = dist_sum + dist_1^2 + dist_2^2;
 end
 
